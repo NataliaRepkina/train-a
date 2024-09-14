@@ -58,7 +58,17 @@ export const tripsReducer = createReducer(
     return { ...state, users };
   }),
   on(routeLoadedByIdSuccess, (state, { route }): TripsState => {
-    return { ...state, routes: [...state.routes, route] };
+    const routes = state.routes.map((r) => {
+      return r.id === route.id ? route : r;
+    });
+    const routeExists = state.routes.some((r) => {
+      return r.id === route.id;
+    });
+
+    return {
+      ...state,
+      routes: routeExists ? routes : [...routes, route],
+    };
   }),
   on(rideLoadedByIdSuccess, (state, { ride }): TripsState => {
     const updatedRides = state.rides.map((r) => {
