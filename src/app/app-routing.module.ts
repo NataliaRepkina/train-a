@@ -15,6 +15,7 @@ import { RoutesComponent } from './shared/components/routes/routes.component';
 import { StationsComponent } from './shared/components/stations/stations.component';
 import { AdminCarriagesComponent } from './shared/components/admin-carriages/admin-carriages.component';
 import { TripDetailComponent } from './features/trips/components/trip-detail/trip-detail.component';
+import { AdminDashboardComponent } from './pages/admin-page/admin-dashboard/admin-dashboard.component';
 
 const routes: Routes = [
   // Common routes
@@ -50,6 +51,10 @@ const routes: Routes = [
     component: AdminPageComponent,
     canActivate: [adminGuard],
     children: [
+      {
+        path: '',
+        component: AdminDashboardComponent,
+      },
       {
         path: 'carriages',
         component: AdminCarriagesComponent,

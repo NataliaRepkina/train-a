@@ -12,6 +12,10 @@ main {
     width: calc(100% - 4rem);
     padding: 2rem;
   }
+  @media (max-width: 480px) {
+    width: calc(100% - 2rem);
+    padding: 2rem 1rem;
+  }
 }
 app-header {
   width: 100%;

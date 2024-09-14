@@ -71,6 +71,12 @@ import { CreateFormComponent } from './components/routes/create-form/create-form
     MatDialogModule,
   ],
   providers: [DatePipe],
-  exports: [CarriageComponent, AdminCarriagesComponent, StationsComponent, RoutesComponent],
+  exports: [
+    CarriageComponent,
+    AdminCarriagesComponent,
+    StationsComponent,
+    RoutesComponent,
+    MatProgressSpinnerModule,
+  ],
 })
 export class SharedModule {}

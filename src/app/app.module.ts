@@ -39,6 +39,7 @@ import { UserEffects } from './core/store/user/user.effects';
 import { TripsModule } from './features/trips/trips.module';
 import { OrderComponent } from './pages/orders-page/order/order.component';
 import { SharedModule } from './shared/shared.module';
+import { AdminDashboardComponent } from './pages/admin-page/admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { SharedModule } from './shared/shared.module';
     SignupPageComponent,
     MainPageComponent,
     OrderComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     BrowserModule,
