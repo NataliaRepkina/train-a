@@ -4,10 +4,11 @@
 
 This is a team learning project done as part of the [RS School Angular course](https://rs.school/courses/angular) in 2024.
 It is an SPA which aims to search and book train tickets and for the administrator to manage journeys, routes and trains.
+You can find out more about the task [here](https://github.com/rolling-scopes-school/tasks/tree/master/tasks/train-a).
 
 # Demo
 
-[Demo](https://mogitrash.github.io/ng-train/)
+[Demo](https://nuttik.github.io/train-a/)
 
 # Built With
 
