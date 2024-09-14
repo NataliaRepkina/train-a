@@ -1,0 +1,26 @@
+:host {
+  .button-create {
+    margin-bottom: 1rem;
+  }
+  &::ng-deep .mat-mdc-card-outlined {
+    border: none;
+  }
+  ol {
+    @media (max-width: 768px) {
+      padding-left: 0rem;
+      list-style-position: inside;
+    }
+    li {
+      margin-bottom: 2rem;
+
+      &::marker {
+        color: var(--primary-blue);
+        font-weight: bold;
+        font-size: 1.25em;
+        @media (max-width: 768px) {
+          font-size: 1em;
+        }
+      }
+    }
+  }
+}

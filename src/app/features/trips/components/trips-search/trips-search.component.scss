@@ -1,0 +1,26 @@
+mat-icon {
+  color: var(--primary-blue);
+}
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+
+  .field {
+    flex-grow: 2;
+  }
+
+  .places {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .search-button {
+    flex-grow: 1;
+    margin-bottom: 20px;
+  }
+}

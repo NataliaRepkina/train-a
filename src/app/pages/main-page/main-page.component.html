@@ -1,1 +1,12 @@
-<p>main-page works!</p>
+<app-trips-search></app-trips-search>
+@if (searchResponses.length > 0) {
+  <app-trips-filter></app-trips-filter>
+} @else {
+  <div class="start-message">
+    <img src="assets/images/start-trip.svg" alt="start search ico" />
+    <p>
+      Choose the cities and date of your trip.<br />
+      Have a good journey!
+    </p>
+  </div>
+}

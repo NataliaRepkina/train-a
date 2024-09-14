@@ -1,1 +1,48 @@
-<p>signin-page works!</p>
+<h1>SignIn</h1>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" [ngClass]="firstContact ? 'active' : null">
+  <mat-form-field appearance="outline">
+    <mat-label for="email">Email</mat-label>
+    <input
+      matInput
+      type="text"
+      id="email"
+      formControlName="email"
+      (keydown)="onClearError()"
+      (blur)="updateErrorMessage('email')"
+    />
+    <mat-error
+      *ngIf="loginForm.controls['email'].invalid && email.dirty && email.touched && firstContact"
+      >{{ errorMessage$ | async }}</mat-error
+    >
+    <div [ngClass]="(error$ | async) !== '' ? 'error' : 'hide'">Incorrect email or password</div>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label for="password">Password</mat-label>
+    <input
+      matInput
+      type="password"
+      id="password"
+      (blur)="updateErrorMessage('password')"
+      formControlName="password"
+      (keydown)="onClearError()"
+    />
+    <mat-error
+      *ngIf="loginForm.controls['password'].invalid && email.dirty && email.touched && firstContact"
+      >{{ errorMessage$ | async }}</mat-error
+    >
+    <div [ngClass]="(error$ | async) !== '' ? 'error' : 'hide'">Incorrect email or password</div>
+  </mat-form-field>
+  <div class="wrapper-button">
+    <button
+      type="submit"
+      mat-flat-button
+      [ngStyle]="{ 'min-width.px': 100 }"
+      [disabled]="!loginForm.valid || (error$ | async) !== ''"
+    >
+      Sign In
+    </button>
+    <button type="button" mat-button [ngStyle]="{ 'min-width.px': 100 }" (click)="goSignUp()">
+      Sign Up
+    </button>
+  </div>
+</form>

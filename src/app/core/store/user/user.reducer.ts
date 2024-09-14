@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { UserState } from '../../models/user.model';
 import {
+  clearError,
   getError,
   getToken,
   getUser,
@@ -21,8 +22,11 @@ const initialUserState: UserState = {
     name: '',
     password: '',
   },
-  token: null,
-  hasError: false,
+  token: '',
+  hasError: {
+    message: '',
+    reason: '',
+  },
 };
 
 export const userReducer = createReducer(
@@ -31,10 +35,13 @@ export const userReducer = createReducer(
     return { ...state, currentUser: { email, name: '', password } };
   }),
   on(signIn, (state, { email, password }): UserState => {
-    return { ...state, currentUser: { email, name: '', password } };
+    return {
+      ...state,
+      currentUser: { email, name: '', password },
+    };
   }),
-  on(getToken, (state, { role, token }): UserState => {
-    return { ...state, currentAccess: role, token };
+  on(getToken, (state, { token }): UserState => {
+    return { ...state, token };
   }),
   on(getUser, (state): UserState => {
     return { ...state };
@@ -52,8 +59,15 @@ export const userReducer = createReducer(
       currentUser: { email, name, password: state.currentUser.password },
     };
   }),
-  on(updateUserPassword, (state): UserState => {
-    return { ...state };
+  on(updateUserPassword, (state, { newPassword }): UserState => {
+    return {
+      ...state,
+      currentUser: {
+        email: state.currentUser.email,
+        name: state.currentUser.name,
+        password: newPassword,
+      },
+    };
   }),
   on(successfulUpdate, (state): UserState => {
     return { ...state };
@@ -63,13 +77,16 @@ export const userReducer = createReducer(
       ...state,
       currentAccess: 'guest',
       currentUser: { email: '', name: '', password: '' },
-      token: null,
+      token: '',
     };
   }),
   on(successfulExit, (state): UserState => {
     return { ...state };
   }),
-  on(getError, (state): UserState => {
-    return { ...state, hasError: true };
-  })
+  on(getError, (state, { error }): UserState => {
+    return { ...state, hasError: { ...error } };
+  }),
+  on(clearError, (state): UserState => {
+    return { ...state, hasError: { message: '', reason: '' } };
+  }),
 );

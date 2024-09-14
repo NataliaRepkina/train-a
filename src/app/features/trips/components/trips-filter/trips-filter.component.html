@@ -1,0 +1,40 @@
+@let searchDate = searchDate$ | async;
+@let selectedIndex = searchDate ? getTabIndexAccordingDate(searchDate) : 0;
+
+@if (searchDates.length > 0) {
+  <mat-tab-group
+    class="tabs"
+    (selectedIndexChange)="setSearchDateByIndex($event)"
+    [selectedIndex]="selectedIndex"
+  >
+    @for (date of searchDates; track date.getTime()) {
+      <mat-tab class="tab-content">
+        <ng-template mat-tab-label>
+          <div class="tab-label">
+            <div class="tab-date">
+              {{ date | date: 'MMMM dd' }}
+            </div>
+
+            <div class="tab-day">
+              {{ date | date: 'EEEE' }}
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template matTabContent>
+          @if (searchDate) {
+            <app-trips-search-results [searchDate]="searchDate"></app-trips-search-results>
+          }
+        </ng-template>
+      </mat-tab>
+    }
+  </mat-tab-group>
+} @else {
+  <div class="not-found-message">
+    <img src="assets/images/error-route.svg" alt="not found ico" />
+    <p>
+      Sorry, trips not found!<br />
+      Try choosing another date or station.
+    </p>
+  </div>
+}

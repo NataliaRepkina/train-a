@@ -1,0 +1,19 @@
+<mat-card appearance="outlined">
+  <mat-card-content>
+    <div class="title-row">
+      <div class="title-row-info">
+        <div class="tipe">Type: {{ carriage.name }}</div>
+        <div class="count-seats">Seats: {{ countOfSeats }}</div>
+      </div>
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="onUpdateCarriage(carriage)"
+        disabled="{{ isDisabled }}"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <app-carriage-simple [carriage]="carriage"></app-carriage-simple>
+  </mat-card-content>
+</mat-card>

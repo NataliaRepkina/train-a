@@ -1,0 +1,290 @@
+<a routerLink="../"
+  ><mat-icon aria-hidden="false" aria-label="back icon" fontIcon="arrow_back"> </mat-icon
+></a>
+@if (route$ | async; as routes) {
+  @for (route of routes; track route.id) {
+    <h1>Route {{ route.id }}</h1>
+    @if (stations$ | async; as stations) {
+      <button mat-flat-button (click)="createRideDialog(route, stations)" class="create-button">
+        Create Ride
+      </button>
+    }
+    @for (ride of rides$ | async; track ride.rideId) {
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title
+            ><h2>Ride {{ ride.rideId }}</h2></mat-card-title
+          >
+          <button mat-icon-button (click)="openDialog(ride.rideId)">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="delete ride icon"
+              fontIcon="delete"
+              color="primary"
+            ></mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="content-container">
+            @if (stations$ | async; as stations) {
+              @for (path of ride.path; track path; let idx = $index) {
+                <div class="container">
+                  <div class="column">
+                    <h6 class="font-weight:bold;">{{ findStationNameById(path, stations) }}</h6>
+                  </div>
+                  <div class="column" id="timetable-{{ ride.rideId }}-{{ idx }}">
+                    @if ($index === 0) {
+                      @if (
+                        !(
+                          isEnable !== undefined &&
+                          ride.rideId === isEnable[0] &&
+                          idx === isEnable[1]
+                        )
+                      ) {
+                        <span class="strong">Departure:</span>
+                        {{ ride.schedule.segments[idx].time[0] | date: 'yyyy-MM-dd HH:mm' }}
+                        <mat-icon
+                          aria-hidden="false"
+                          aria-label="delete station icon"
+                          fontIcon="edit"
+                          (click)="
+                            editTimetable(
+                              ride.rideId,
+                              idx,
+                              ride.schedule.segments[idx].time[0],
+                              '',
+                              '',
+                              ride.schedule.segments[idx].time[1]
+                            )
+                          "
+                        ></mat-icon>
+                      } @else {
+                        <form [formGroup]="timetableForm">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Departure:</mat-label>
+                            <input
+                              matInput
+                              formControlName="departure"
+                              required
+                              type="datetime-local"
+                            />
+                            @if (timetableForm.get('departure')?.hasError('required')) {
+                              <mat-error> Departure is required </mat-error>
+                            }
+                          </mat-form-field>
+                          @if (timetableForm.hasError('invalidDeparture')) {
+                            <mat-error>{{ timetableForm.getError('invalidDeparture') }}</mat-error>
+                          }
+                        </form>
+                        <button
+                          mat-icon-button
+                          [disabled]="!timetableForm.valid"
+                          (click)="updateTimetable(ride, idx)"
+                        >
+                          <mat-icon
+                            aria-hidden="false"
+                            aria-label="delete station icon"
+                            fontIcon="save"
+                          ></mat-icon>
+                        </button>
+                      }
+                    } @else if ($index < ride.path.length - 1) {
+                      @if (
+                        !(
+                          isEnable !== undefined &&
+                          ride.rideId === isEnable[0] &&
+                          idx === isEnable[1]
+                        )
+                      ) {
+                        <span class="strong">Departure:</span>
+                        {{ ride.schedule.segments[idx - 1].time[1] | date: 'yyyy-MM-dd HH:mm' }}
+                        <br />
+                        <span class="strong">Arrival:</span>
+                        {{ ride.schedule.segments[idx].time[0] | date: 'yyyy-MM-dd HH:mm' }}
+                        <mat-icon
+                          aria-hidden="false"
+                          aria-label="delete station icon"
+                          fontIcon="edit"
+                          (click)="
+                            editTimetable(
+                              ride.rideId,
+                              idx,
+                              ride.schedule.segments[idx].time[0],
+                              ride.schedule.segments[idx - 1].time[1],
+                              ride.schedule.segments[idx - 1].time[0],
+                              ride.schedule.segments[idx].time[1]
+                            )
+                          "
+                        ></mat-icon>
+                      } @else {
+                        <form [formGroup]="timetableForm">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Departure:</mat-label>
+                            <input
+                              matInput
+                              required
+                              formControlName="arrival"
+                              type="datetime-local"
+                            />
+                            @if (timetableForm.get('arrival')?.hasError('required')) {
+                              <mat-error> Departure is required </mat-error>
+                            }
+                          </mat-form-field>
+                          @if (timetableForm.hasError('invalidDeparture')) {
+                            <mat-error>{{ timetableForm.getError('invalidDeparture') }}</mat-error>
+                          }
+                          <br />
+                          <mat-form-field appearance="outline">
+                            <mat-label>Arrival:</mat-label>
+                            <input
+                              matInput
+                              formControlName="departure"
+                              required
+                              type="datetime-local"
+                            />
+                            @if (timetableForm.get('departure')?.hasError('required')) {
+                              <mat-error> Arrival is required </mat-error>
+                            }
+                          </mat-form-field>
+                          @if (timetableForm.hasError('invalidArrival')) {
+                            <mat-error>{{ timetableForm.getError('invalidArrival') }}</mat-error>
+                          }
+                        </form>
+                        <button
+                          mat-icon-button
+                          [disabled]="!timetableForm.valid"
+                          (click)="updateTimetable(ride, idx)"
+                        >
+                          <mat-icon
+                            aria-hidden="false"
+                            aria-label="delete station icon"
+                            fontIcon="save"
+                          ></mat-icon>
+                        </button>
+                      }
+                    } @else {
+                      @if (
+                        !(
+                          isEnable !== undefined &&
+                          ride.rideId === isEnable[0] &&
+                          idx === isEnable[1]
+                        )
+                      ) {
+                        Arrival:
+                        {{ ride.schedule.segments[idx - 1].time[1] | date: 'yyyy-MM-dd HH:mm' }}
+                        <mat-icon
+                          aria-hidden="false"
+                          aria-label="delete station icon"
+                          fontIcon="edit"
+                          (click)="
+                            editTimetable(
+                              ride.rideId,
+                              idx,
+                              '',
+                              ride.schedule.segments[idx - 1].time[1],
+                              ride.schedule.segments[idx - 1].time[0],
+                              ''
+                            )
+                          "
+                        ></mat-icon>
+                      } @else {
+                        <form [formGroup]="timetableForm">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Arrival:</mat-label>
+                            <input
+                              matInput
+                              formControlName="arrival"
+                              required
+                              type="datetime-local"
+                            />
+                            @if (timetableForm.get('arrival')?.hasError('required')) {
+                              <mat-error> Arrival is required </mat-error>
+                            }
+                          </mat-form-field>
+                          @if (timetableForm.hasError('invalidArrival')) {
+                            <mat-error>{{ timetableForm.getError('invalidArrival') }}</mat-error>
+                          }
+                        </form>
+                        <button
+                          mat-icon-button
+                          [disabled]="!timetableForm.valid"
+                          (click)="updateTimetable(ride, idx)"
+                        >
+                          <mat-icon
+                            aria-hidden="false"
+                            aria-label="delete station icon"
+                            fontIcon="save"
+                          ></mat-icon>
+                        </button>
+                      }
+                    }
+                  </div>
+                  <div class="column">
+                    @if ($index < ride.path.length - 1) {
+                      @if (
+                        !(
+                          isEnablePrice !== undefined &&
+                          ride.rideId === isEnablePrice[0] &&
+                          idx === isEnablePrice[1]
+                        )
+                      ) {
+                        <span class="strong">Prices:</span>
+                        <mat-icon
+                          aria-hidden="false"
+                          aria-label="delete station icon"
+                          fontIcon="edit"
+                          (click)="editPrice(ride.rideId, idx, ride.schedule.segments[idx].price)"
+                        ></mat-icon>
+                        <div *ngFor="let key of getKeys(ride.schedule.segments[idx].price)">
+                          {{ key }}:
+                          {{
+                            ride.schedule.segments[idx].price[key] / 100
+                              | currency: 'USD' : 'symbol' : '1.2-2'
+                          }}
+                        </div>
+                      } @else {
+                        <form [formGroup]="priceForm">
+                          <div *ngFor="let key of priceControls; let i = index">
+                            <mat-form-field
+                              appearance="outline"
+                              subscriptSizing="dynamic"
+                              style="margin-bottom: 16px"
+                            >
+                              <mat-label>{{ key }}</mat-label>
+                              <input
+                                step="0.01"
+                                matInput
+                                [formControlName]="key"
+                                min="0"
+                                required
+                                type="number"
+                              />
+                              @if (priceForm.get(key)?.hasError('required')) {
+                                <mat-error> Price is required </mat-error>
+                              }
+                              @if (priceForm.get(key)?.hasError('min')) {
+                                <mat-error> Price must be at least 0 </mat-error>
+                              }
+                            </mat-form-field>
+                          </div>
+                        </form>
+                        <button
+                          mat-icon-button
+                          [disabled]="!priceForm.valid"
+                          (click)="updatePrice(ride, idx)"
+                        >
+                          <mat-icon aria-hidden="false" aria-label="save icon">save</mat-icon>
+                        </button>
+                      }
+                    }
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <br />
+    }
+  }
+}

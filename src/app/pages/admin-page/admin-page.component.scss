@@ -1,0 +1,36 @@
+@import './../../../styles.scss';
+
+:host {
+  display: flex;
+  @media (max-width: 770px) {
+    flex-direction: column;
+  }
+
+  .content-wrapper {
+    padding-left: 2rem;
+    width: 100%;
+    @media (max-width: 770px) {
+      padding-left: 0;
+      padding-top: 2rem;
+    }
+  }
+  .buttons-wrapper {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    button {
+      width: 10rem;
+    }
+    @media (max-width: 770px) {
+      width: 100%;
+      flex-direction: row;
+    }
+    .non-active {
+      background-color: var(--grey-light);
+    }
+    .active {
+      background-color: var(--blue-extra-light);
+    }
+  }
+}

@@ -11,11 +11,11 @@ export const userGuard: CanActivateFn = () => {
   return store.select(selectAccess).pipe(
     take(1),
     map((currentAccess) => {
-      if (currentAccess === 'user') {
-        return true;
+      if (currentAccess === 'guest') {
+        router.navigate(['/signin']);
+        return false;
       }
-      router.navigate(['/signin']);
-      return false;
-    })
+      return true;
+    }),
   );
 };

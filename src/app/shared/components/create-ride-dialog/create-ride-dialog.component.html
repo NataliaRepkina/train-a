@@ -1,0 +1,210 @@
+<h1 mat-dialog-title>Create Ride</h1>
+<div mat-dialog-content>
+  @for (station of data.route.path; track $index) {
+    <form [formGroup]="createRide">
+      <div formArrayName="segments">
+        <div class="container">
+          <div class="column">
+            {{ findStationNameById(station) }}
+          </div>
+          <div class="column">
+            @if ($index === 0) {
+              <div [formGroupName]="$index">
+                <div formGroupName="time">
+                  <mat-form-field
+                    appearance="outline"
+                    subscriptSizing="dynamic"
+                    style="margin-bottom: 16px"
+                  >
+                    <mat-label>Departure:</mat-label>
+                    <input matInput formControlName="departure" required type="datetime-local" />
+                    @if (
+                      createRide.controls.segments
+                        .at($index)
+                        .get('time.departure')
+                        ?.hasError('required')
+                    ) {
+                      <mat-error> Departure is required </mat-error>
+                    } @else if (
+                      createRide.controls.segments
+                        .at($index)
+                        .get('time.departure')
+                        ?.hasError('invalidDeparture')
+                    ) {
+                      <mat-error>
+                        {{
+                          createRide.controls.segments
+                            .at($index)
+                            .get('time.departure')
+                            ?.getError('invalidDeparture')
+                        }}
+                      </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+            } @else if ($index > 0 && $index < data.route.path.length - 1) {
+              <div [formGroupName]="$index - 1">
+                <div formGroupName="time">
+                  <mat-form-field
+                    appearance="outline"
+                    subscriptSizing="dynamic"
+                    style="margin-bottom: 16px"
+                  >
+                    <mat-label>Departure:</mat-label>
+                    <input matInput formControlName="arrival" required type="datetime-local" />
+                    @if (
+                      createRide.controls.segments
+                        .at($index - 1)
+                        .get('time.arrival')
+                        ?.hasError('required')
+                    ) {
+                      <mat-error> Arrival is required </mat-error>
+                    } @else if (
+                      createRide.controls.segments
+                        .at($index - 1)
+                        .get('time.arrival')
+                        ?.hasError('invalidArrival')
+                    ) {
+                      <mat-error>
+                        {{
+                          createRide.controls.segments
+                            .at($index - 1)
+                            .get('time.arrival')
+                            ?.getError('invalidArrival')
+                        }}
+                      </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+              <div [formGroupName]="$index">
+                <div formGroupName="time">
+                  <mat-form-field
+                    appearance="outline"
+                    subscriptSizing="dynamic"
+                    style="margin-bottom: 16px"
+                  >
+                    <mat-label>Arrival:</mat-label>
+                    <input matInput formControlName="departure" required type="datetime-local" />
+                    @if (
+                      createRide.controls.segments
+                        .at($index)
+                        .get('time.departure')
+                        ?.hasError('required')
+                    ) {
+                      <mat-error> Departure is required </mat-error>
+                    } @else if (
+                      createRide.controls.segments
+                        .at($index)
+                        .get('time.departure')
+                        ?.hasError('invalidDeparture')
+                    ) {
+                      <mat-error>
+                        {{
+                          createRide.controls.segments
+                            .at($index)
+                            .get('time.departure')
+                            ?.getError('invalidDeparture')
+                        }}
+                      </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+            } @else {
+              <div [formGroupName]="$index - 1">
+                <div formGroupName="time">
+                  <mat-form-field
+                    appearance="outline"
+                    subscriptSizing="dynamic"
+                    style="margin-bottom: 16px"
+                  >
+                    <mat-label>Arrival:</mat-label>
+                    <input matInput formControlName="arrival" required type="datetime-local" />
+                    @if (
+                      createRide.controls.segments
+                        .at($index - 1)
+                        .get('time.arrival')
+                        ?.hasError('required')
+                    ) {
+                      <mat-error> Arrival is required </mat-error>
+                    } @else if (
+                      createRide.controls.segments
+                        .at($index - 1)
+                        .get('time.arrival')
+                        ?.hasError('invalidArrival')
+                    ) {
+                      <mat-error>
+                        {{
+                          createRide.controls.segments
+                            .at($index - 1)
+                            .get('time.arrival')
+                            ?.getError('invalidArrival')
+                        }}
+                      </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+            }
+          </div>
+          <div class="column">
+            @if ($index < data.route.path.length - 1) {
+              <div [formGroupName]="$index">
+                <div formGroupName="price">
+                  <div *ngFor="let key of getUniqueCarriages()">
+                    <mat-form-field
+                      appearance="outline"
+                      subscriptSizing="dynamic"
+                      style="margin-bottom: 16px"
+                    >
+                      <mat-label>{{ key }}</mat-label>
+                      <input
+                        matInput
+                        [formControlName]="key"
+                        step="0.01"
+                        min="0"
+                        required
+                        type="number"
+                      />
+                      @if (
+                        createRide.controls.segments
+                          .at($index)
+                          .get('price')!
+                          .get(key)
+                          ?.hasError('required')
+                      ) {
+                        <mat-error> Price is required </mat-error>
+                      }
+                      @if (
+                        createRide.controls.segments
+                          .at($index)
+                          .get('price')!
+                          .get(key)
+                          ?.hasError('min')
+                      ) {
+                        <mat-error> Price must be at least 0 </mat-error>
+                      }
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </form>
+  }
+</div>
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    [mat-dialog-close]="true"
+    [disabled]="!createRide.valid"
+    (click)="onCreateRide()"
+    cdkFocusInitial
+  >
+    Create
+  </button>
+</mat-dialog-actions>

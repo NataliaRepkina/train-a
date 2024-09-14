@@ -1,0 +1,7 @@
+@import './../../../styles.scss';
+@import './../signup-page/signup-page.component.scss';
+:host {
+  .error {
+    top: 95% !important;
+  }
+}

@@ -1,1 +1,79 @@
-<p>profile-page works!</p>
+<h1>Profile <span *ngIf="(role$ | async) === 'manager'">Manager</span></h1>
+<ng-container *ngIf="visibleModal">
+  <div class="wrapper-modal">
+    <div class="bg-modal"></div>
+    <div class="modal">
+      <h2>New password</h2>
+      <mat-form-field appearance="outline">
+        <mat-label for="newPassword">New password</mat-label>
+        <input matInput type="password" id="newPassword" [formControl]="newPassword" />
+      </mat-form-field>
+      <div class="buttons-row">
+        <button type="button" mat-flat-button (click)="updatePassword(newPassword.value ?? '')">
+          Update password
+        </button>
+        <button type="submit" mat-flat-button (click)="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div class="user-info">
+  <div class="row">
+    <div class="row-title">Name:</div>
+    <div *ngIf="nameMode === 'writing'; else nameReading">
+      <div class="wrapper">
+        <mat-form-field appearance="outline">
+          <mat-label for="name">New name</mat-label>
+          <input matInput type="text" id="name" [formControl]="newName" />
+        </mat-form-field>
+        <button
+          type="button"
+          mat-icon-button
+          class="edit"
+          (click)="updateUserData(newName.value ?? '', '')"
+        >
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+    </div>
+    <ng-template #nameReading>
+      <div class="wrapper">
+        <span>{{ currentName }}</span>
+        <button type="button" (click)="changeNameMode()" mat-icon-button class="edit">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </ng-template>
+  </div>
+  <div class="row">
+    <div class="row-title">Email:</div>
+    <div *ngIf="emailMode === 'writing'; else emailReading">
+      <div class="wrapper">
+        <mat-form-field appearance="outline">
+          <mat-label for="newEmail">New email</mat-label>
+          <input matInput type="text" id="newEmail" [formControl]="newEmail" />
+        </mat-form-field>
+        <button
+          type="button"
+          mat-icon-button
+          class="edit"
+          (click)="updateUserData('', newEmail.value ?? '')"
+        >
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+    </div>
+    <ng-template #emailReading>
+      <div class="wrapper">
+        <span>{{ currentEmail }}</span>
+        <button type="button" (click)="changeEmailMode()" mat-icon-button class="edit">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+<div class="row buttons-row">
+  <button type="button" mat-flat-button (click)="makeVisibleModal()">Change password</button>
+  <button type="button" mat-flat-button (click)="LogOut()">LogOut</button>
+</div>

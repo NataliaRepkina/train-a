@@ -1,0 +1,97 @@
+@import './../../../styles.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: var(--container-with);
+  padding: 0.5rem 0;
+  @media (max-width: 1200px) {
+    width: calc(100% - 4rem);
+    padding: 0.5rem 2rem;
+    margin: 0 auto;
+  }
+
+  h2 {
+    text-align: center;
+    color: var(--primary-blue);
+  }
+
+  form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 3% auto;
+    width: 50%;
+
+    .error {
+      position: absolute;
+      display: block;
+      color: var(--error-red);
+      font-size: 12px;
+      font-weight: 400;
+      width: 100%;
+      height: 16px;
+      top: 21%;
+      left: 3%;
+    }
+    .hide {
+      position: absolute;
+      display: block;
+      color: transparent;
+      font-size: 0px;
+      font-weight: 400;
+      width: 100%;
+      height: 16px;
+    }
+
+    .second {
+      position: absolute;
+      display: block;
+      color: var(--error-red);
+      font-size: 12px;
+      font-weight: 400;
+      width: 100%;
+      height: 16px;
+      top: 77%;
+      left: 3%;
+    }
+
+    .wrapper-button {
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+      gap: 5%;
+      button {
+        border: 1px solid var(--blue-extra-light);
+      }
+    }
+  }
+
+  form:not([class~='active']) {
+    --mdc-outlined-text-field-error-outline-color: var(--grey);
+    --mdc-outlined-text-field-error-focus-outline-color: var(--grey);
+    --mdc-outlined-text-field-error-label-text-color: var(--grey);
+    --mdc-outlined-text-field-error-focus-label-text-color: var(--grey);
+    --mdc-filled-text-field-error-focus-label-text-color: var(--grey);
+    --mdc-outlined-text-field-error-hover-outline-color: var(--grey);
+    --mdc-outlined-text-field-error-hover-label-text-color: var(--grey);
+  }
+  @media (max-width: 450px) {
+    margin: 0 auto;
+
+    form {
+      width: 100%;
+      .wrapper-button {
+        margin: 0 auto;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5%;
+        button {
+          margin-bottom: 3%;
+        }
+      }
+    }
+  }
+}

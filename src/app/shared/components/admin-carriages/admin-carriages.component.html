@@ -1,0 +1,32 @@
+<h1>Carriages management</h1>
+<button
+  mat-flat-button
+  color="primary"
+  type="submit"
+  (click)="toggleOpenForm()"
+  class="button-create"
+  [disabled]="isFormOpen"
+>
+  Create carriage
+</button>
+<div id="formContainer" #formElement>
+  <ng-container *ngIf="isFormOpen">
+    <app-carriage-form
+      [carriage]="updatedCarriage"
+      [countCarriages]="carriagesCount"
+      (formSubmitted)="toggleOpenForm()"
+      (formClosed)="toggleOpenForm()"
+      #anchorElement
+    ></app-carriage-form>
+  </ng-container>
+</div>
+
+<ol>
+  <li *ngFor="let carriage of carriages$ | async | reverse; trackBy: trackByCarriage">
+    <app-carriage-card
+      [carriage]="carriage"
+      [isDisabled]="isFormOpen"
+      (updatedCarriage)="onSelectedUpdateCarriage($event)"
+    ></app-carriage-card>
+  </li>
+</ol>

@@ -1,0 +1,44 @@
+<form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+  <div class="stations" formArrayName="stations">
+    <h2>Stations</h2>
+    <select
+      *ngFor="let item of stations.controls; index as i"
+      (change)="changeStation(i)"
+      [formControlName]="i"
+    >
+      <option value="" disabled [selected]="!stations.value[i]">Choose city</option>
+      <ng-container *ngIf="i === 0; else connectedTo">
+        @for (station of stations$ | async; track station.city) {
+          <option [value]="station.id" [selected]="stations.controls[i].value === station.id">
+            {{ station.city }}
+          </option>
+        }
+      </ng-container>
+      <ng-template #connectedTo>
+        @for (station of getConnectedCities(stations.value[i - 1]); track station.city) {
+          <option [value]="station.id" [selected]="stations.controls[i].value === station.id">
+            {{ station.city }}
+          </option>
+        }
+      </ng-template>
+    </select>
+  </div>
+  <div class="carriages" formArrayName="carriages">
+    <h2>Carriages</h2>
+    <select
+      *ngFor="let value of carriages.controls; index as k"
+      (change)="addItem('carriage')"
+      [formControlName]="k"
+    >
+      <option value="" disabled [selected]="!carriages.value[k]">Choose carriage</option>
+      @for (carriage of carriagesList; track $index) {
+        <option [value]="carriage.code" [selected]="carriages.controls[k].value === carriage.code">
+          {{ carriage.name }}
+        </option>
+      }
+    </select>
+  </div>
+  <button type="submit" mat-button [disabled]="stations.length < 4 || carriages.length < 4">
+    Create new Route
+  </button>
+</form>

@@ -1,1 +1,70 @@
-<p>signup-page works!</p>
+<h1>SignUp</h1>
+
+<form [formGroup]="registryForm" (ngSubmit)="onSubmit()" [ngClass]="firstContact ? 'active' : null">
+  <mat-form-field appearance="outline">
+    <mat-label for="email">Email</mat-label>
+    <input
+      matInput
+      type="text"
+      id="email"
+      formControlName="email"
+      (keydown)="onClearError()"
+      (blur)="updateErrorMessage('email')"
+    />
+    <mat-error
+      *ngIf="registryForm.controls['email'].invalid && email.dirty && email.touched && firstContact"
+      >{{ errorMessage$ | async }}</mat-error
+    >
+  </mat-form-field>
+  <div [ngClass]="(reason$ | async) === 'invalidUniqueKey' ? 'error' : 'hide'">
+    Account with this email already exists
+  </div>
+  <mat-form-field appearance="outline">
+    <mat-label for="password">Password</mat-label>
+    <input
+      matInput
+      type="password"
+      id="password"
+      formControlName="password"
+      (blur)="updateErrorMessage('password')"
+    />
+    <mat-error
+      *ngIf="
+        registryForm.controls['password'].invalid && email.dirty && email.touched && firstContact
+      "
+      >{{ errorMessage$ | async }}</mat-error
+    >
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label for="repeatPassword">Repeat password</mat-label>
+    <input matInput type="password" id="repeatPassword" formControlName="repeatPassword" />
+  </mat-form-field>
+  <div
+    [ngClass]="
+      registryForm.errors?.['MatchError'] && repeatPassword.dirty && repeatPassword.touched
+        ? 'second'
+        : 'hide'
+    "
+  >
+    Passwords do not match
+  </div>
+  <div class="wrapper-button">
+    <button
+      type="submit"
+      mat-flat-button
+      [ngStyle]="{ 'min-width.px': 100 }"
+      [disabled]="!registryForm.valid || (reason$ | async) === 'invalidUniqueKey'"
+    >
+      Register
+    </button>
+    <button
+      class="button"
+      type="button"
+      mat-button
+      [ngStyle]="{ 'min-width.px': 100 }"
+      (click)="goSignIn()"
+    >
+      Sign In
+    </button>
+  </div>
+</form>

@@ -1,0 +1,46 @@
+<div class="top-row">
+  <div class="status status_{{ status }}">{{ status }}</div>
+  <button
+    mat-icon-button
+    (click)="deleteOrder()"
+    title="Delete this order"
+    class="button-delete"
+    *ngIf="status === 'active'"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div class="order-info">
+  <div class="trip-paths">
+    <div class="trip-path">
+      <div class="direction">From:</div>
+      <div>
+        <div class="station">{{ startStation }}</div>
+        <div class="time">{{ startTime }}</div>
+      </div>
+    </div>
+    <div class="duration">Travel time: {{ durationTrip }}</div>
+    <div class="trip-path">
+      <div class="direction">To:</div>
+      <div>
+        <div class="station">{{ endStation }}</div>
+        <div class="time">{{ endTime }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="train">
+    <div class="carriage">
+      <div class="carriage-title">
+        Carriage: <span class="carriage-number">№{{ numberCarriage }}</span>
+      </div>
+      <div class="carriage-type">{{ typeCarriage }}</div>
+    </div>
+    <div class="seat">
+      <div class="seat-title">Seat:</div>
+      <div class="seat-number">
+        {{ numberSeat }}
+      </div>
+    </div>
+  </div>
+  <div class="price">Price: ${{ price }}</div>
+</div>

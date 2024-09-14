@@ -14,3 +14,7 @@ ul {
 .colum {
   flex-direction: column;
 }
+.active {
+  font-weight: 500;
+  color: var(--primary-blue);
+}

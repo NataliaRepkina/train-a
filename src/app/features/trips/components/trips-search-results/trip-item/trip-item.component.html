@@ -1,0 +1,61 @@
+@let rides = rides$ | async;
+
+@if (rides && rides.length > 0) {
+  <div class="ride">
+    <div class="info">
+      <div class="info-time">
+        <div class="start">
+          <div class="time">{{ rideStartDate | date: 'HH:mm' }}</div>
+          <div class="date">{{ rideStartDate | date: 'MMMM d' }}</div>
+          <div class="city">{{ rideStartStation }}</div>
+        </div>
+
+        <div class="path">
+          <mat-icon class="icon">radio_button_unchecked</mat-icon>
+          <div class="duration"><span>Travel time: </span>{{ rideDuration }}</div>
+          <div class="line"></div>
+          <mat-icon class="icon">radio_button_checked</mat-icon>
+        </div>
+
+        <div class="end">
+          <div class="time">{{ rideEndDate | date: 'HH:mm' }}</div>
+          <div class="date">{{ rideEndDate | date: 'MMMM d' }}</div>
+          <div class="city">{{ rideEndStation }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prices">
+      <mat-icon> train</mat-icon>
+      <div class="price-list">
+        @for (price of prices; track $index) {
+          <div class="price-item">
+            <div class="carriage">{{ price[0] }}</div>
+            <div class="price">${{ calculateTotalRidePrice(price[0]) }}</div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button mat-button (click)="openRouteDialog()">
+        <mat-icon>route</mat-icon>
+        Route
+      </button>
+      <button
+        mat-button
+        [routerLink]="['/detail']"
+        [queryParams]="{
+          rideId: rideItemInfo.rideId,
+          fromId: rideItemInfo.from.stationId,
+          toId: rideItemInfo.to.stationId,
+        }"
+      >
+        <mat-icon>more_vert</mat-icon>
+        Book tickets
+      </button>
+    </div>
+  </div>
+} @else {
+  <mat-spinner></mat-spinner>
+}

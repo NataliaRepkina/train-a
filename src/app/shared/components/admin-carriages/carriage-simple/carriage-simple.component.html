@@ -1,0 +1,26 @@
+<div class="carriage">
+  <ng-container
+    *ngFor="let seatGroup of [seats | splitSeats: carriage.leftSeats : carriage.rightSeats]"
+  >
+    <div class="seats seats-right">
+      <div *ngFor="let column of seatGroup[0]" class="column">
+        <div *ngFor="let seat of column; trackBy: trackBySeat" class="seat seat-free">
+          <label>
+            <input type="checkbox" />
+            {{ seat.numberInCarriage }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="seats seats-left">
+      <div *ngFor="let column of seatGroup[1]" class="column">
+        <div *ngFor="let seat of column; trackBy: trackBySeat" class="seat seat-free">
+          <label>
+            <input type="checkbox" />
+            {{ seat.numberInCarriage }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

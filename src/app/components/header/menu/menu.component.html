@@ -1,39 +1,52 @@
 <nav>
   <ul [ngClass]="{ row: !isMobile, colum: isMobile }">
-    <li><a [routerLink]="this.navLinks.guest.home">Home</a></li>
+    <li>
+      <a
+        [routerLink]="navLinks.guest.home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="onLinkClick()"
+        >Home</a
+      >
+    </li>
+    <ng-container *ngIf="role !== 'guest'">
+      <li>
+        <a [routerLink]="navLinks.user.profile" routerLinkActive="active" (click)="onLinkClick()"
+          >Profile</a
+        >
+      </li>
+    </ng-container>
     <ng-container *ngIf="role === 'user'">
       <li>
-        <a [routerLink]="this.navLinks.user.profile">Profile</a>
-      </li>
-      <li>
-        <a [routerLink]="this.navLinks.user.orders">My Orders</a>
+        <a [routerLink]="navLinks.user.orders" routerLinkActive="active" (click)="onLinkClick()"
+          >My Orders</a
+        >
       </li>
     </ng-container>
     <ng-container *ngIf="role === 'manager'">
       <li>
-        <a [routerLink]="this.navLinks.admin.profile">Profile</a>
+        <a [routerLink]="navLinks.user.orders" routerLinkActive="active" (click)="onLinkClick()"
+          >Orders</a
+        >
       </li>
       <li>
-        <a [routerLink]="this.navLinks.admin.orders">Orders</a>
+        <a [routerLink]="navLinks.admin.panel" routerLinkActive="active" (click)="onLinkClick()"
+          >Admin</a
+        >
       </li>
     </ng-container>
   </ul>
 </nav>
 <div class="buttons" [ngClass]="{ row: !isMobile, colum: isMobile }">
   <ng-container *ngIf="role === 'guest'">
-    <button mat-flat-button [routerLink]="this.navLinks.guest.signup">
+    <button mat-flat-button [routerLink]="navLinks.guest.signup" (click)="onLinkClick()">
       Sign Up
     </button>
-    <button mat-flat-button [routerLink]="this.navLinks.guest.signin">
+    <button mat-flat-button [routerLink]="navLinks.guest.signin" (click)="onLinkClick()">
       Sign In
     </button>
   </ng-container>
-  <ng-container *ngIf="role === 'user'">
-    <button mat-flat-button (click)="onLogout()">Logout</button>
-  </ng-container>
-  <ng-container *ngIf="role === 'manager'">
-    <button mat-flat-button [routerLink]="this.navLinks.admin.panel">
-      Admin
-    </button>
+  <ng-container *ngIf="role !== 'guest'">
+    <button mat-flat-button (click)="logout()">Logout</button>
   </ng-container>
 </div>

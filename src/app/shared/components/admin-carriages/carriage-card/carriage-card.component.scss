@@ -1,0 +1,19 @@
+.title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0rem 2rem;
+  color: var(--primary-blue);
+  font-size: 1.175rem;
+  line-height: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  flex-wrap: wrap;
+}
+.title-row-info {
+  display: flex;
+  align-items: flex-end;
+  gap: 0rem 2rem;
+  flex-wrap: wrap;
+}

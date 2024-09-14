@@ -1,6 +1,6 @@
-import { Segment } from "./segment.model";
+import { Segment } from './segment.model';
 
 export interface Schedule {
-    rideId: number,
-    segments: Segment[]
+  rideId: number;
+  segments: Segment[];
 }

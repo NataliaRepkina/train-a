@@ -2,12 +2,16 @@
   --container-with: 1200px;
   --black: #2c2a29;
   --primary-blue: #213786;
-  --secondary-blue-light: #4a62ba;
+  --blue-light: #4a62ba;
+  --blue-extra-light: #dee1ed;
   --success-green: #00c136;
+  --green-light: #d8ffe7;
   --error-red: #ff1c1c;
+  --red-light: #ffebeb;
   --grey: #9ca3af;
   --grey-light: #f2f2f2;
   --grey-extra-light: #fdfcff;
+  --yellow: #ffd700;
 }
 
 html,
@@ -16,7 +20,31 @@ body {
 }
 body {
   margin: 0;
-  font: 400 1rem / 1.5rem "Segoe UI", sans-serif !important;
+  font:
+    400 1rem / 1.5rem 'Segoe UI',
+    sans-serif !important;
+  color: var(--black);
+}
+
+.mat-typography h1 {
+  font:
+    400 2.5rem / 3rem 'Segoe UI',
+    sans-serif !important;
+  letter-spacing: -0.016rem;
+  margin: 0 0 0.5em;
+  color: var(--primary-blue);
+  text-align: center;
+}
+.mat-typography h2 {
+  font:
+    400 2rem / 2.5rem 'Segoe UI',
+    sans-serif !important;
+  letter-spacing: -0.016rem;
+}
+.mat-typography h3 {
+  font:
+    400 2rem / 2.5rem 'Segoe UI',
+    sans-serif !important;
 }
 
 .mat-mdc-unelevated-button:not(:disabled) {

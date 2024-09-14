@@ -1,27 +1,57 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject, catchError, throwError } from 'rxjs';
 import { Station } from '../models/station.model';
-import { Route } from '../models/route.model';
 import { Carriage } from '../models/carriage.model';
 import { Order } from '../models/order.model';
 import { User } from '../models/user.model';
 import { Ride } from '../models/ride.model';
-import { SearchResponse } from '../models/searchResponse.model';
+import { SearchResponseDTO } from '../models/searchResponseDTO.model';
+import { Route } from '../models/route.model';
+import { SearchResponse } from '../../../core/models/trips.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TripsService {
-  constructor(private http: HttpClient) {
+  public searchResponse$ = new Subject<SearchResponseDTO>();
+
+  constructor(private http: HttpClient) {}
+
+  public getSearchResponse() {
+    return this.searchResponse$.asObservable();
   }
 
-  public search(fromLatitude: number, fromLongitude: number, toLatitude: number, toLongitude: number, time?: number) {
+  public setSearchResponse(res: SearchResponseDTO) {
+    this.searchResponse$.next(res);
+  }
 
-    const params: { fromLatitude: number, fromLongitude: number, toLatitude: number, toLongitude: number, time?: number } =
-      { fromLatitude, fromLongitude, toLatitude, toLongitude };
+  public search(
+    fromLatitude: number,
+    fromLongitude: number,
+    toLatitude: number,
+    toLongitude: number,
+    time?: number,
+  ) {
+    const params: {
+      fromLatitude: number;
+      fromLongitude: number;
+      toLatitude: number;
+      toLongitude: number;
+      time?: number;
+    } = { fromLatitude, fromLongitude, toLatitude, toLongitude };
     if (time) {
       params.time = time;
     }
+    return this.http.get<SearchResponseDTO>(`/api/search`, { params });
+  }
+
+  public searchStation(fromLatitude: number, fromLongitude: number) {
+    const params: {
+      fromLatitude: number;
+      fromLongitude: number;
+    } = { fromLatitude, fromLongitude };
+
     return this.http.get<SearchResponse>(`/api/search`, { params });
   }
 
@@ -34,7 +64,7 @@ export class TripsService {
       city,
       latitude,
       longitude,
-      relations
+      relations,
     });
   }
 
@@ -51,7 +81,10 @@ export class TripsService {
   }
 
   public updateRoute(id: number, path: number[], carriages: string[]) {
-    return this.http.put<{ id: number }>(`/api/route/${id}`, { path, carriages });
+    return this.http.put<{ id: number }>(`/api/route/${id}`, {
+      path,
+      carriages,
+    });
   }
 
   public deleteRoute(id: number) {
@@ -63,11 +96,27 @@ export class TripsService {
   }
 
   public createCarriageType(name: string, rows: number, leftSeats: number, rightSeats: number) {
-    return this.http.post<{ code: string }>('/api/carriage', { name, rows, leftSeats, rightSeats });
+    return this.http.post<{ code: string }>('/api/carriage', {
+      name,
+      rows,
+      leftSeats,
+      rightSeats,
+    });
   }
 
-  public updateCarriageType(code: string, name: string, rows: number, leftSeats: number, rightSeats: number) {
-    return this.http.put<{ code: string }>(`/api/carriage/${code}`, { name, rows, leftSeats, rightSeats });
+  public updateCarriageType(
+    code: string,
+    name: string,
+    rows: number,
+    leftSeats: number,
+    rightSeats: number,
+  ) {
+    return this.http.put<{ code: string }>(`/api/carriage/${code}`, {
+      name,
+      rows,
+      leftSeats,
+      rightSeats,
+    });
   }
 
   public getOrderList(all?: boolean) {
@@ -79,11 +128,30 @@ export class TripsService {
   }
 
   public createOrder(rideId: number, seat: number, stationStart: number, stationEnd: number) {
-    return this.http.post<{ id: string }>('/api/order', { rideId, seat, stationStart, stationEnd });
+    return this.http.post<{ id: string }>('/api/order', {
+      rideId,
+      seat,
+      stationStart,
+      stationEnd,
+    });
   }
 
   public deleteOrder(orderId: number) {
-    return this.http.delete(`/api/order/${orderId}`);
+    return this.http.delete<void>(`/api/order/${orderId}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 400) {
+          return throwError(() => {
+            return {
+              message: error.error?.message || 'Unknown error',
+              reason: error.error?.reason || 'unknownError',
+            };
+          });
+        }
+        return throwError(() => {
+          return error;
+        });
+      }),
+    );
   }
 
   public getUsersList() {
@@ -98,19 +166,28 @@ export class TripsService {
     return this.http.get<Ride>(`/api/search/${rideId}`);
   }
 
-  public createRide(routeId: number, segments: {
-    time: [string, string],
-    price: { [key: string]: number }
-  }[]) {
+  public createRide(
+    routeId: number,
+    segments: {
+      time: [string, string];
+      price: { [key: string]: number };
+    }[],
+  ) {
     return this.http.post<{ id: number }>(`/api/route/${routeId}/ride`, { segments });
   }
 
-
-  public updateRide(routeId: number, rideId: number, segments: {
-    time: [string, string],
-    price: { [key: string]: number }
-  }[]) {
+  public updateRide(
+    routeId: number,
+    rideId: number,
+    segments: {
+      time: [string, string];
+      price: { [key: string]: number };
+    }[],
+  ) {
     return this.http.put(`/api/route/${routeId}/ride/${rideId}`, { segments });
   }
 
+  public deleteRide(routeId: number, rideId: number) {
+    return this.http.delete<void>(`/api/route/${routeId}/ride/${rideId}`);
+  }
 }

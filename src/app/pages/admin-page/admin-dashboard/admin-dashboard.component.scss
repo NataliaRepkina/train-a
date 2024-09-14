@@ -1,0 +1,30 @@
+.statistics {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  list-style: none;
+  font-size: 1.25rem;
+
+  @media (max-width: 980px) {
+    flex-direction: column;
+  }
+
+  li,
+  .statistic-name {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    mat-icon {
+      color: var(--primary-blue);
+    }
+  }
+  .statistic-name {
+    gap: 0.5rem;
+  }
+}
+.welcome-message {
+  span {
+    font-weight: 500;
+  }
+}

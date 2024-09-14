@@ -1,1 +1,36 @@
-<p>orders-page works!</p>
+<ng-container *ngIf="role$ | async as role">
+  <ng-container *ngIf="role === 'manager'; else notManager">
+    <h1>All Orders</h1>
+  </ng-container>
+  <ng-template #notManager>
+    <h1>Your Orders</h1>
+  </ng-template>
+  <ng-container *ngIf="ordersForView.length > 0">
+    <ol class="orders-list">
+      <li *ngFor="let order of ordersForView; trackBy: trackByOrderId">
+        <app-order [order]="order" (delete)="onDeleteOrder(order.id)"></app-order>
+        <ng-container *ngIf="warningOrderId === order.id">
+          <div class="bg-warning"></div>
+          <div class="warning">
+            <h2>Are you sure?</h2>
+            <p>
+              Are you sure you want to delete the order {{ order.id }}
+              <ng-container *ngIf="role === 'manager'"> by customer {{ order.user }}</ng-container>
+              ?
+            </p>
+            <div class="buttons-row">
+              <button type="submit" mat-flat-button (click)="deleteOrder(order.id)">Yes</button>
+              <button type="submit" mat-flat-button (click)="closeWarning()">No</button>
+            </div>
+          </div>
+        </ng-container>
+      </li>
+    </ol>
+  </ng-container>
+</ng-container>
+<div class="overlay" *ngIf="isLoading$ | async">
+  <mat-spinner></mat-spinner>
+</div>
+<ng-container *ngIf="(isLoading$ | async) === false && ordersForView.length === 0">
+  <p>No orders available.</p>
+</ng-container>

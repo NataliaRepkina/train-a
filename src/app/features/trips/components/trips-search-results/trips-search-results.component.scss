@@ -1,0 +1,10 @@
+:host {
+  padding: 20px 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media (max-width: 680px) {
+    padding: 20px 0px;
+  }
+}

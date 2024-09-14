@@ -1,0 +1,59 @@
+@if (stations && stations.length > 0) {
+  <form class="search-form" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <div class="places">
+      <mat-form-field class="field" hideRequiredMarker>
+        <mat-icon matPrefix>radio_button_unchecked</mat-icon>
+        <mat-label>From</mat-label>
+        <input
+          matInput
+          type="text"
+          [formControl]="searchForm.controls.startCity"
+          [matAutocomplete]="from"
+          placeholder="city1"
+        />
+        <mat-autocomplete autoActiveFirstOption #from>
+          @for (station of filteredFromStations$ | async; track station) {
+            <mat-option [value]="station.city">{{ station.city }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field class="field" hideRequiredMarker>
+        <mat-icon matPrefix>radio_button_checked</mat-icon>
+        <mat-label>To</mat-label>
+        <input
+          matInput
+          type="text"
+          [formControl]="searchForm.controls.endCity"
+          [matAutocomplete]="to"
+          placeholder="city2"
+        />
+        <mat-autocomplete autoActiveFirstOption #to>
+          @for (station of filteredToStations$ | async; track station) {
+            <mat-option [value]="station.city">{{ station.city }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="field">
+      <mat-label>Choose a date</mat-label>
+      <input
+        [min]="minDate"
+        matInput
+        [matDatepicker]="picker"
+        [formControl]="searchForm.controls.date"
+      />
+      <mat-datepicker-toggle matIconPrefix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    @if (searchForm.valid) {
+      <button class="search-button" mat-flat-button>Search</button>
+    } @else {
+      <button class="search-button" mat-flat-button disabled>Search</button>
+    }
+  </form>
+} @else {
+  <mat-spinner></mat-spinner>
+}

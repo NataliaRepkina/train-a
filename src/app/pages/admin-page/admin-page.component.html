@@ -1,1 +1,29 @@
-<p>admin-page works!</p>
+<div class="buttons-wrapper">
+  <button
+    mat-button
+    routerLink="stations"
+    (click)="makeActive('stations')"
+    [ngClass]="activeButtons === 'stations' ? 'active' : 'non-active'"
+  >
+    Stations
+  </button>
+  <button
+    mat-button
+    routerLink="routes"
+    (click)="makeActive('routes')"
+    [ngClass]="activeButtons === 'routes' ? 'active' : 'non-active'"
+  >
+    Routes
+  </button>
+  <button
+    mat-button
+    routerLink="carriages"
+    (click)="makeActive('carriages')"
+    [ngClass]="activeButtons === 'carriages' ? 'active' : 'non-active'"
+  >
+    Carriages
+  </button>
+</div>
+<section class="content-wrapper">
+  <router-outlet></router-outlet>
+</section>

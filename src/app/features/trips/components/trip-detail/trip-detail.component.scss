@@ -1,0 +1,80 @@
+.ride {
+  padding: 20px;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.info {
+  width: 100%;
+}
+
+.time,
+.city {
+  font-weight: 500;
+}
+
+.duration {
+  position: absolute;
+  font-weight: 500;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 10px;
+}
+
+.info-time {
+  display: flex;
+  gap: 5px;
+}
+
+.icon {
+  color: var(--primary-blue);
+}
+
+.line {
+  background-color: var(--primary-blue);
+  flex-grow: 1;
+  height: 3px;
+}
+
+.path {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prices {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  @media (max-width: 600px) {
+    justify-content: flex-start;
+    gap: 10px;
+  }
+}
+
+.book-button {
+  margin-top: 20px;
+}
+
+.tabs {
+  width: 100%;
+
+  .tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tab-label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+}

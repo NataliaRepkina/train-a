@@ -1,0 +1,95 @@
+<h1>Stations management</h1>
+<mat-card appearance="outlined" class="main-content">
+  <mat-card-content>
+    @if (isLoading$ | async) {
+      <div class="overlay">
+        <mat-spinner></mat-spinner>
+      </div>
+    }
+    <div class="content-container">
+      <div id="map" class="map-container"></div>
+      <div class="other-container">
+        <form [formGroup]="stationForm" (ngSubmit)="onSubmit()">
+          <mat-form-field subscriptSizing="dynamic" style="margin-bottom: 16px">
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city" />
+            @if (stationForm.controls.city.invalid) {
+              <mat-error>Please enter city name</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" style="margin-bottom: 16px">
+            <mat-label>Latitude</mat-label>
+            <input matInput type="number" formControlName="latitude" min="-180" max="180" />
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" style="margin-bottom: 16px">
+            <mat-label>Longitude</mat-label>
+            <input matInput type="number" formControlName="longitude" min="-180" max="180" />
+          </mat-form-field>
+
+          <div formArrayName="relations">
+            <div *ngFor="let relation of relations.controls; let i = index">
+              <mat-form-field subscriptSizing="dynamic" style="margin-bottom: 16px">
+                <mat-label>Relation {{ i + 1 }}</mat-label>
+                <mat-select [formControlName]="i">
+                  <mat-option selected>Not selected</mat-option>
+                  @if (stations$ | async; as stations) {
+                    @for (station of stations; track station.id) {
+                      <mat-option [value]="station.id" [disabled]="isOptionSelected(station.id)">{{
+                        station.city
+                      }}</mat-option>
+                    }
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <button mat-flat-button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    @if (stations$ | async; as stations) {
+      <div class="stantions-list">
+        @for (station of visualisation$ | async; track station.id) {
+          <mat-card appearance="outlined" class="station-item">
+            <mat-card-header>
+              <mat-card-title>
+                <div class="title-container">
+                  <span>{{ station.city }}</span>
+                  <button mat-icon-button color="primary" (click)="onDelete(station.id, stations)">
+                    <mat-icon
+                      aria-hidden="false"
+                      aria-label="delete station icon"
+                      fontIcon="delete"
+                    ></mat-icon>
+                  </button>
+                </div>
+              </mat-card-title>
+
+              <mat-card-subtitle
+                >{{ station.latitude | number: '1.0-4' }}
+                {{ station.longitude | number: '1.0-4' }}</mat-card-subtitle
+              >
+            </mat-card-header>
+            <mat-card-content>
+              <span>Connected to: </span>
+              @for (connectedStation of station.connectedTo; track connectedStation.id) {
+                <span class="connected-stantion">{{
+                  findStationNameById(connectedStation.id, stations)
+                }}</span>
+              }
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    }
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,3 @@
+@for (itemInfo of selectedGroup$ | async; track itemInfo.rideId) {
+  <app-trip-item [rideItemInfo]="itemInfo"></app-trip-item>
+}

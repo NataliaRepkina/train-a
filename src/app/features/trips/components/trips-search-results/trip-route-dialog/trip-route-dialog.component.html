@@ -1,0 +1,92 @@
+@let segments = data.segments;
+
+<div class="dialog">
+  <div class="header" mat-dialog-title>
+    <div class="name">Route {{ data.rideId }}</div>
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+
+  <mat-dialog-content>
+    <div class="legend">
+      <div class="time-legend">Time</div>
+      <div class="route-legend"></div>
+      <div class="station-legend">Station</div>
+      <div class="stop-legend">Stop</div>
+    </div>
+
+    <div class="wrapper">
+      <div class="time-wrapper">
+        <div class="time-item start-time">{{ segments[0].time[0] | date: 'HH:mm' }}</div>
+
+        @for (item of segments; track $index) {
+          @if ($index !== 0 && $index !== segments.length - 1) {
+            <div class="time-item">
+              @let arrival = segments[$index - 1].time[1] | date: 'HH:mm';
+              @let departure = item.time[0] | date: 'HH:mm';
+              {{ arrival }}/{{ departure }}
+            </div>
+          }
+        }
+
+        <div class="time-item end-time">
+          {{ segments[segments.length - 1].time[0] | date: 'HH:mm' }}
+        </div>
+      </div>
+
+      <div class="route-wrapper">
+        <div class="line"></div>
+
+        <div class="start-station">
+          <mat-icon class="icon start-station">radio_button_unchecked</mat-icon>
+        </div>
+
+        @for (item of segments; track $index) {
+          @if ($index !== 0 && $index !== segments.length - 1) {
+            <div class="mid-station">
+              <mat-icon class="icon">radio_button_unchecked</mat-icon>
+            </div>
+          }
+        }
+
+        <div class="end-station">
+          <mat-icon class="icon end-station">radio_button_checked</mat-icon>
+        </div>
+      </div>
+
+      <div class="station-wrapper">
+        <div class="station-item start-station">{{ routeStationsCities.at(0)?.city }}</div>
+
+        @for (item of segments; track $index) {
+          @if ($index !== 0 && $index !== segments.length - 1) {
+            <div class="station-item">
+              {{ routeStationsCities.at($index)?.city }}
+            </div>
+          }
+        }
+
+        <div class="station-item end-station">
+          {{ routeStationsCities.at(routeStationsCities.length - 1)?.city }}
+        </div>
+      </div>
+
+      <div class="stop-wrapper">
+        <div class="stop-item first-stop">First station</div>
+
+        @for (item of segments; track $index) {
+          @if ($index !== 0 && $index !== segments.length - 1) {
+            <div class="time-item">
+              @let arrival = segments[$index - 1].time[1];
+              @let departure = item.time[0];
+              {{ getTimeDifference(arrival, departure) }}
+            </div>
+          }
+        }
+
+        <div class="stop-item last-stop">Last station</div>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>

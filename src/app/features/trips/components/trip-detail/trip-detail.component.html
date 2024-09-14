@@ -1,0 +1,75 @@
+@let rides = rides$ | async;
+@let stations = stations$ | async;
+
+<button mat-icon-button routerLink="..">
+  <mat-icon>arrow_back</mat-icon>
+</button>
+@if (rides && rides.length > 0 && stations && stations.length > 0) {
+  <div class="ride">
+    <div class="info">
+      <div class="info-time">
+        <div class="start">
+          <div class="time">{{ rideStartDate | date: 'HH:mm' }}</div>
+          <div class="date">{{ rideStartDate | date: 'MMMM d' }}</div>
+          <div class="city">{{ rideStartCity }}</div>
+        </div>
+
+        <div class="path">
+          <mat-icon class="icon">radio_button_unchecked</mat-icon>
+          <div class="duration">{{ rideDuration }}</div>
+          <div class="line"></div>
+          <mat-icon class="icon">radio_button_checked</mat-icon>
+        </div>
+
+        <div class="end">
+          <div class="time">{{ rideEndDate | date: 'HH:mm' }}</div>
+          <div class="date">{{ rideEndDate | date: 'MMMM d' }}</div>
+          <div class="city">{{ rideEndCity }}</div>
+        </div>
+      </div>
+    </div>
+
+    <button mat-button (click)="openRouteDialog()">
+      <mat-icon>route</mat-icon>
+      Route
+    </button>
+
+    <mat-tab-group class="tabs" dynamicHeight>
+      @for (carriage of carriages; track carriage.code) {
+        @if (carriage) {
+          <mat-tab>
+            <ng-template matTabLabel>
+              <div class="tab-label">
+                <div class="carriage-name">
+                  {{ carriage.name }}
+                </div>
+                <div class="price">${{ calculateTotalRidePrice(carriage.name) }}</div>
+              </div>
+            </ng-template>
+
+            <app-carriage
+              [carriageNumber]="$index + 1"
+              [rows]="carriage.rows"
+              [leftSeats]="carriage.leftSeats"
+              [rightSeats]="carriage.rightSeats"
+              [occupiedSeat]="getCarriageOccupiedSeats(occupiedSeats, $index + 1)"
+              (selectedSeatsChange)="onSeatsSelect($event)"
+            ></app-carriage>
+
+            <button
+              class="book-button"
+              mat-flat-button
+              [disabled]="!isSeatsSelected"
+              (click)="onSeatsBook()"
+            >
+              <mat-icon>check_circle</mat-icon>
+              Book seats
+            </button>
+          </mat-tab>
+        }
+      }
+    </mat-tab-group>
+  </div>
+} @else {
+  <mat-spinner></mat-spinner>
+}

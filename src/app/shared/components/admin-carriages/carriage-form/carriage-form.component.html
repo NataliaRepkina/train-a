@@ -1,0 +1,72 @@
+<mat-card>
+  <mat-card-title>
+    <ng-container *ngIf="!carriage">Create Carriage</ng-container>
+    <ng-container *ngIf="carriage">Edit Carriage: {{ carriage.name }}</ng-container></mat-card-title
+  >
+  <mat-card-content>
+    <form [formGroup]="carriageForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Rows Count</mat-label>
+        <input matInput type="number" formControlName="rowCount" />
+        <mat-error *ngIf="carriageForm.get('rowCount')?.hasError('required')">
+          Row count is required
+        </mat-error>
+        <mat-error *ngIf="carriageForm.get('rowCount')?.hasError('min')">
+          Row count must be at least 1
+        </mat-error>
+        <mat-error *ngIf="carriageForm.get('rowCount')?.hasError('max')">
+          There should be no more than 22 rows
+        </mat-error>
+        <mat-error *ngIf="carriageForm.get('rowCount')?.hasError('pattern')">
+          Row count must be a positive integer
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Right Seats</mat-label>
+        <input matInput type="number" formControlName="rightSeats" />
+        <mat-error *ngIf="carriageForm.get('rightSeats')?.hasError('required')">
+          Columns right is required
+        </mat-error>
+        <mat-error *ngIf="carriageForm.get('rightSeats')?.hasError('min')">
+          Columns right must be at least 1
+        </mat-error>
+        <mat-error *ngIf="carriageForm.get('rightSeats')?.hasError('max')">
+          There should be no more than 10 column
+        </mat-error>
+        <mat-error *ngIf="carriageForm.get('rightSeats')?.hasError('pattern')">
+          Row count must be a positive integer
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Left Seats</mat-label>
+        <input matInput type="number" formControlName="leftSeats" />
+        <mat-error *ngIf="carriageForm.get('leftSeats')?.hasError('required')">
+          Columns left is required
+        </mat-error>
+        <mat-error *ngIf="carriageForm.get('leftSeats')?.hasError('min')">
+          Columns left must be at least 1
+        </mat-error>
+        <mat-error *ngIf="carriageForm.get('leftSeats')?.hasError('max')">
+          There should be no more than 10 column
+        </mat-error>
+        <mat-error *ngIf="carriageForm.get('leftSeats')?.hasError('pattern')">
+          Row count must be a positive integer
+        </mat-error>
+      </mat-form-field>
+
+      <div class="button-row">
+        <button mat-flat-button color="primary" type="submit" [disabled]="carriageForm.invalid">
+          <ng-container *ngIf="!carriage">Save</ng-container>
+          <ng-container *ngIf="carriage">Update</ng-container>
+        </button>
+        <button mat-button color="primary" type="button" (click)="closeForm()">Cancel</button>
+      </div>
+    </form>
+    <div class="prototype">
+      <div class="subtitle">Prototype:</div>
+      <app-carriage-simple [carriage]="prototypeCarriage"></app-carriage-simple>
+    </div>
+  </mat-card-content>
+</mat-card>

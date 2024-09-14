@@ -1,0 +1,54 @@
+<div class="title-row">
+  <div class="number">Car {{ carriageNumber }}</div>
+  <div class="free-seats">{{ countOfFreeSeats }} free seats</div>
+</div>
+<div class="carriage">
+  <ng-container *ngFor="let seatGroup of [seats | splitSeats: leftSeats : rightSeats]">
+    <div class="seats seats-right">
+      <div *ngFor="let column of seatGroup[0]" class="column">
+        <div
+          *ngFor="let seat of column"
+          class="seat"
+          [ngClass]="{
+            'seat-free': seat.status === 'free',
+            'seat-occupied': seat.status === 'occupied',
+            'seat-booked': seat.status === 'booked',
+          }"
+        >
+          <label>
+            <input
+              type="checkbox"
+              [checked]="seat.status === seatStatus.OCCUPIED"
+              [disabled]="seat.status === seatStatus.OCCUPIED"
+              (change)="onSeatSelectionChange(seat, $event)"
+            />
+            {{ seat.numberInCarriage }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="seats seats-left">
+      <div *ngFor="let column of seatGroup[1]" class="column">
+        <div
+          *ngFor="let seat of column; trackBy: trackBySeat"
+          class="seat"
+          [ngClass]="{
+            'seat-free': seat.status === 'free',
+            'seat-occupied': seat.status === 'occupied',
+            'seat-booked': seat.status === 'booked',
+          }"
+        >
+          <label>
+            <input
+              type="checkbox"
+              [checked]="seat.status === seatStatus.OCCUPIED"
+              [disabled]="seat.status === seatStatus.OCCUPIED"
+              (change)="onSeatSelectionChange(seat, $event)"
+            />
+            {{ seat.numberInCarriage }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
