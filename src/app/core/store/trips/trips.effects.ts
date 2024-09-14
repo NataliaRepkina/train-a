@@ -330,6 +330,12 @@ export class TripsEffects {
           .createOrder(action.rideId, action.seat, action.stationStart, action.stationEnd)
           .pipe(
             map((response) => {
+              this.snackBar.open('Order created successfully!', 'Close', {
+                duration: 159000,
+                panelClass: ['snackbar-success', 'snackbar-custom'],
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
               return tripActions.createOrderSuccess(response);
             }),
             catchError((error) => {
@@ -346,6 +352,12 @@ export class TripsEffects {
       exhaustMap((action) => {
         return this.tripsService.deleteOrder(action.orderId).pipe(
           map(() => {
+            this.snackBar.open('Order deleted successfully!', 'Close', {
+              duration: 159000,
+              panelClass: ['snackbar-success', 'snackbar-custom'],
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
             return tripActions.orderDeletedSuccess({ orderId: action.orderId });
           }),
           catchError((error) => {
@@ -528,7 +540,10 @@ export class TripsEffects {
         ofType(tripActions.failureSnackBar),
         tap((error) => {
           this.snackBar.open(error.error.message, 'Close', {
-            duration: 5000,
+            duration: 195000,
+            panelClass: ['snackbar-error', 'snackbar-custom'],
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
           });
           tripActions.loadingFinished();
         }),
@@ -578,6 +593,8 @@ export class TripsEffects {
           catchError((error) => {
             return of(tripActions.failureSnackBar({ error }));
           }),
+          startWith(tripActions.loadingStarted()),
+          endWith(tripActions.loadingFinished()),
         );
       }),
     );
