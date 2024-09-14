@@ -1,18 +1,22 @@
 <h1>Profile <span *ngIf="(role$ | async) === 'manager'">Manager</span></h1>
-<mat-card *ngIf="visibleModal" appearance="outlined" class="modal">
-  <mat-card-content>
-    <h2>New password</h2>
-    <div class="wrapper-modal">
+<ng-container *ngIf="visibleModal">
+  <div class="wrapper-modal">
+    <div class="bg-modal"></div>
+    <div class="modal">
+      <h2>New password</h2>
       <mat-form-field appearance="outline">
         <mat-label for="newPassword">New password</mat-label>
         <input matInput type="password" id="newPassword" [formControl]="newPassword" />
       </mat-form-field>
-      <button type="button" mat-flat-button (click)="updatePassword(newPassword.value ?? '')">
-        Update password
-      </button>
+      <div class="buttons-row">
+        <button type="button" mat-flat-button (click)="updatePassword(newPassword.value ?? '')">
+          Update password
+        </button>
+        <button type="submit" mat-flat-button (click)="closeModal()">Cancel</button>
+      </div>
     </div>
-  </mat-card-content>
-</mat-card>
+  </div>
+</ng-container>
 <div class="user-info">
   <div class="row">
     <div class="row-title">Name:</div>

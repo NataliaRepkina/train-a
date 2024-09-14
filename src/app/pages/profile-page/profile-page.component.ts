@@ -124,4 +124,8 @@ export class ProfilePageComponent implements OnInit {
   public LogOut() {
     this.store.dispatch(signOut());
   }
+
+  protected closeModal() {
+    this.visibleModal = false;
+  }
 }
