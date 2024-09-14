@@ -1,5 +1,5 @@
 <h1>Stations management</h1>
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" class="main-content">
   <mat-card-content>
     @if (isLoading$ | async) {
       <div class="overlay">
@@ -51,34 +51,39 @@
       </div>
     </div>
     @if (stations$ | async; as stations) {
-      @for (station of visualisation$ | async; track station.id) {
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>
-              <div class="title-container">
-                <span>{{ station.city }}</span>
-                <button mat-icon-button (click)="onDelete(station.id, stations)">
-                  <mat-icon
-                    aria-hidden="false"
-                    aria-label="delete station icon"
-                    fontIcon="delete"
-                  ></mat-icon>
-                </button>
-              </div>
-            </mat-card-title>
+      <div class="stantions-list">
+        @for (station of visualisation$ | async; track station.id) {
+          <mat-card appearance="outlined" class="station-item">
+            <mat-card-header>
+              <mat-card-title>
+                <div class="title-container">
+                  <span>{{ station.city }}</span>
+                  <button mat-icon-button color="primary" (click)="onDelete(station.id, stations)">
+                    <mat-icon
+                      aria-hidden="false"
+                      aria-label="delete station icon"
+                      fontIcon="delete"
+                    ></mat-icon>
+                  </button>
+                </div>
+              </mat-card-title>
 
-            <mat-card-subtitle
-              >{{ station.latitude | number: '1.0-4' }}
-              {{ station.longitude | number: '1.0-4' }}</mat-card-subtitle
-            >
-          </mat-card-header>
-          <mat-card-content>
-            @for (connectedStation of station.connectedTo; track connectedStation.id) {
-              {{ findStationNameById(connectedStation.id, stations) }}
-            }
-          </mat-card-content>
-        </mat-card>
-      }
+              <mat-card-subtitle
+                >{{ station.latitude | number: '1.0-4' }}
+                {{ station.longitude | number: '1.0-4' }}</mat-card-subtitle
+              >
+            </mat-card-header>
+            <mat-card-content>
+              <span>Connected to: </span>
+              @for (connectedStation of station.connectedTo; track connectedStation.id) {
+                <span class="connected-stantion">{{
+                  findStationNameById(connectedStation.id, stations)
+                }}</span>
+              }
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
       <mat-paginator
         [pageSizeOptions]="[5, 10, 20]"
         showFirstLastButtons
