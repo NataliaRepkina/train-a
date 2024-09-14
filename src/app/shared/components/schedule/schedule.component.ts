@@ -9,7 +9,7 @@ import { Route } from '../../../features/trips/models/route.model';
 import { loadRouteById, loadStations, updateRide } from '../../../core/store/trips/trips.actions';
 import {
   selectRides,
-  selectRoutes,
+  selectRouteById,
   selectStations,
 } from '../../../core/store/trips/trips.selectors';
 import { Station } from '../../../features/trips/models/station.model';
@@ -59,7 +59,7 @@ export class ScheduleComponent implements OnInit {
   ngOnInit() {
     this.selectedId = Number(this.route.snapshot.paramMap.get('id'));
     this.store.dispatch(loadRouteById({ id: this.selectedId }));
-    this.route$ = this.store.select(selectRoutes);
+    this.route$ = this.store.select(selectRouteById(this.selectedId));
     this.rides$ = this.store.select(selectRides);
   }
 
