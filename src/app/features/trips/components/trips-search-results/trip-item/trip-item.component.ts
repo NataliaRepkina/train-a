@@ -112,7 +112,7 @@ export class TripItemComponent implements OnInit {
     const lastSegment = rideSegments.at(rideSegments.length - 1)!;
 
     this.rideStartDate = new Date(firstSegment.time[0]);
-    this.rideEndDate = new Date(lastSegment.time[1]);
+    this.rideEndDate = new Date(lastSegment.time[0]);
 
     this.rideDuration = getTimeDifference(this.rideStartDate, this.rideEndDate);
 

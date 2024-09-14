@@ -1,11 +1,11 @@
 .ride {
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid var(--grey);
   border-radius: 30px;
   flex-wrap: wrap;
   display: flex;
   justify-content: space-between;
-  gap: 5px;
+  gap: 0.75rem;
 }
 
 .info {
@@ -17,12 +17,23 @@
   font-weight: 500;
 }
 
+.city {
+  text-transform: capitalize;
+}
+
 .duration {
   position: absolute;
   font-weight: 500;
   left: 50%;
   transform: translateX(-50%);
   top: 10px;
+  color: var(--grey);
+
+  @media (max-width: 680px) {
+    span {
+      display: none;
+    }
+  }
 }
 
 .info-time {
@@ -47,12 +58,21 @@
   justify-content: space-between;
   align-items: center;
 }
+.price-list {
+  display: flex;
+  gap: 0.5rem 2rem;
+  flex: 1;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 
 .prices {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 1rem;
+  align-items: center;
 
   @media (max-width: 600px) {
     justify-content: flex-start;
@@ -62,12 +82,19 @@
 
 .price-item {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 0.5rem;
 
   .price {
     font-weight: 500;
-    font-size: 20px;
+    font-size: 1rem;
+  }
+  .carriage {
+    padding: 0.25rem 0.75rem;
+    font-weight: 600;
+    color: var(--grey);
+    background-color: var(--grey-light);
+    border-radius: 0.75rem;
   }
 }
