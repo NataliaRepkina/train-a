@@ -9,6 +9,7 @@
           type="text"
           [formControl]="searchForm.controls.startCity"
           [matAutocomplete]="from"
+          placeholder="city1"
         />
         <mat-autocomplete autoActiveFirstOption #from>
           @for (station of filteredFromStations$ | async; track station) {
@@ -25,6 +26,7 @@
           type="text"
           [formControl]="searchForm.controls.endCity"
           [matAutocomplete]="to"
+          placeholder="city2"
         />
         <mat-autocomplete autoActiveFirstOption #to>
           @for (station of filteredToStations$ | async; track station) {

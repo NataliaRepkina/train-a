@@ -5,8 +5,13 @@
         <div class="tipe">Type: {{ carriage.name }}</div>
         <div class="count-seats">Seats: {{ countOfSeats }}</div>
       </div>
-      <button mat-button (click)="onUpdateCarriage(carriage)" disabled="{{ isDisabled }}">
-        <mat-icon>edit</mat-icon>Update
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="onUpdateCarriage(carriage)"
+        disabled="{{ isDisabled }}"
+      >
+        <mat-icon>edit</mat-icon>
       </button>
     </div>
     <app-carriage-simple [carriage]="carriage"></app-carriage-simple>

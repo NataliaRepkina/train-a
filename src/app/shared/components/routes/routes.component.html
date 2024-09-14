@@ -1,17 +1,18 @@
+<h1>Routes management</h1>
 <div class="wrapper">
   <div class="wrapper-forms-button">
-    <button mat-button (click)="isOpen = true" [disabled]="updateMode">New route</button>
-    <button mat-button (click)="isOpen = false" *ngIf="isOpen">Close</button>
+    <button mat-flat-button (click)="isOpen = true" [disabled]="updateMode">New route</button>
+    <button mat-flat-button (click)="isOpen = false" *ngIf="isOpen">Close</button>
   </div>
   <button class="reverse" mat-icon-button (click)="isReverse = !isReverse">
-    <mat-icon color="primary">autorenew</mat-icon>
+    <mat-icon color="primary">sort</mat-icon>
   </button>
 </div>
 
 <app-create-form (changeOpen)="isOpen = $event" *ngIf="isOpen"></app-create-form>
 
-<div class="formContainer" #formElement>
-  <ng-container *ngIf="updateMode">
+<div class="formContainer" #formElement *ngIf="updateMode">
+  <ng-container>
     <app-update-form
       [currentRoute]="currentRoute"
       (closeForm)="updateMode = $event"
@@ -25,61 +26,67 @@
 </div>
 
 <div class="dialog" *ngIf="dialogOpen">
-  <h2 mat-dialog-title>Delete route</h2>
-  <div class="content">Would you like to delete route №{{ deleteId }}?</div>
-  <div class="actions">
-    <button mat-button (click)="dialogOpen = false">No</button>
-    <button mat-button (click)="onDeleteRoute(deleteId)">Yes</button>
+  <div class="bg-warning"></div>
+  <div class="warning">
+    <h2 mat-dialog-title>Delete route</h2>
+    <div class="content">Would you like to delete route №{{ deleteId }}?</div>
+    <div class="actions">
+      <button mat-flat-button (click)="onDeleteRoute(deleteId)">Yes</button>
+      <button mat-flat-button (click)="dialogOpen = false">No</button>
+    </div>
+  </div>
+</div>
+<div class="routes-list">
+  <div
+    class="route"
+    *ngFor="
+      let route of (isReverse ? (routes$ | async | reverse) : (routes$ | async))!.slice(
+        (NumberPage - 1) * 5,
+        NumberPage * 5
+      );
+      index as i
+    "
+  >
+    <div class="route-header">
+      <div class="route-title">Route {{ route.id }}</div>
+      <div
+        class="route-header-buttons"
+        (mousemove)="showButtonsGoal()"
+        (mouseleave)="hideButtonsGoal()"
+      >
+        <button mat-icon-button title="Update" (click)="updateRoute(route)" [disabled]="createMode">
+          <mat-icon color="primary">edit</mat-icon>
+          <!-- <span *ngIf="showMode">Update ride</span> -->
+        </button>
+        <button mat-icon-button title="Assign ride" [routerLink]="[route.id]">
+          <mat-icon color="primary">train</mat-icon>
+          <!--  <span *ngIf="showMode">Assign ride</span> -->
+        </button>
+        <button mat-icon-button title="Delete ride" (click)="openDialog(route.id)">
+          <mat-icon color="primary">delete</mat-icon>
+          <!-- <span *ngIf="showMode">Delete ride</span> -->
+        </button>
+      </div>
+    </div>
+    <div class="cities">
+      <div class="city-title"><mat-icon>place</mat-icon> Cities:</div>
+      <ul>
+        <li *ngFor="let city of getCities(route.path); last as isLast">
+          {{ isLast ? city : city + ' - ' }}
+        </li>
+      </ul>
+    </div>
+    <div class="carriages-types">
+      <div class="carriages-title"><mat-icon>train</mat-icon> Carriages Types:</div>
+      <ul>
+        <li *ngFor="let type of route.carriages; last as isLast">
+          {{ isLast ? type : type + ' - ' }}
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
-<mat-divider></mat-divider>
-<div
-  class="route"
-  *ngFor="
-    let route of (isReverse ? (routes$ | async | reverse) : (routes$ | async))!.slice(
-      (NumberPage - 1) * 5,
-      NumberPage * 5
-    );
-    index as i
-  "
->
-  <div class="route-header">
-    <h3>Route {{ route.id }}</h3>
-    <div
-      class="route-header-buttons"
-      (mousemove)="showButtonsGoal()"
-      (mouseleave)="hideButtonsGoal()"
-    >
-      <button mat-icon-button title="Update" (click)="updateRoute(route)" [disabled]="createMode">
-        <mat-icon color="primary">edit_square</mat-icon>
-        <span *ngIf="showMode">Update ride</span>
-      </button>
-      <button mat-icon-button title="Assign ride" [routerLink]="[route.id]">
-        <mat-icon color="primary">train</mat-icon>
-        <span *ngIf="showMode">Assign ride</span>
-      </button>
-      <button mat-icon-button title="Delete ride" (click)="openDialog(route.id)">
-        <mat-icon color="primary">delete</mat-icon>
-        <span *ngIf="showMode">Delete ride</span>
-      </button>
-    </div>
-  </div>
-  <mat-divider></mat-divider>
-  <div class="cities">
-    <h4>Cities:</h4>
-    <span *ngFor="let city of getCities(route.path); last as isLast"
-      >{{ isLast ? city : city + ' -' }}
-    </span>
-  </div>
-  <mat-divider></mat-divider>
-  <div class="carriages-types">
-    <h4>Carriages Types:</h4>
-    <span *ngFor="let type of route.carriages; last as isLast">{{
-      isLast ? type : type + ' -'
-    }}</span>
-  </div>
-</div>
 <div class="pagination">
   <button mat-icon-button [disabled]="!(NumberPage - 10 > 0)" (click)="changePage('minus', 10)">
     <mat-icon>keyboard_double_arrow_left</mat-icon>

@@ -5,7 +5,7 @@
   <ng-template #notManager>
     <h1>Your Orders</h1>
   </ng-template>
-  <ng-container *ngIf="ordersForView.length > 0; else noOrders">
+  <ng-container *ngIf="ordersForView.length > 0">
     <ol class="orders-list">
       <li *ngFor="let order of ordersForView; trackBy: trackByOrderId">
         <app-order [order]="order" (delete)="onDeleteOrder(order.id)"></app-order>
@@ -28,6 +28,9 @@
     </ol>
   </ng-container>
 </ng-container>
-<ng-template #noOrders>
+<div class="overlay" *ngIf="isLoading$ | async">
+  <mat-spinner></mat-spinner>
+</div>
+<ng-container *ngIf="(isLoading$ | async) === false && ordersForView.length === 0">
   <p>No orders available.</p>
-</ng-template>
+</ng-container>

@@ -4,6 +4,7 @@ import { combineLatest, map, Observable, Subject, switchMap, take, takeUntil } f
 import { formatDate } from '@angular/common';
 import {
   selectCarriages,
+  selectLoading,
   selectOrders,
   selectStations,
   selectUsers,
@@ -51,6 +52,8 @@ export class OrdersPageComponent implements OnInit, OnDestroy {
   protected warningOrderId: number | null = null;
 
   private destroy$ = new Subject<void>();
+
+  public readonly isLoading$: Observable<boolean> = this.store.select(selectLoading);
 
   constructor(private store: Store) {}
 
@@ -130,8 +133,8 @@ export class OrdersPageComponent implements OnInit, OnDestroy {
     const startTime = order.schedule.segments[startStationIndex].time[0];
     const startDate = new Date(startTime);
 
-    const endStationIndex = order.path.indexOf(order.stationEnd);
-    const endTime = order.schedule.segments[endStationIndex].time[1];
+    const endStationIndex = order.path.indexOf(order.stationEnd) - 1;
+    const endTime = order.schedule.segments[endStationIndex].time[0];
     const endDate = new Date(endTime);
 
     const durationMs = endDate.getTime() - startDate.getTime();
@@ -187,8 +190,11 @@ export class OrdersPageComponent implements OnInit, OnDestroy {
   }
 
   private getEndData(order: Order): string {
-    const endStationIndex = order.path.indexOf(order.stationEnd);
-    const endTime = order.schedule.segments[endStationIndex].time[1];
+    const endStationIndex =
+      order.path.indexOf(order.stationEnd) >= order.schedule.segments.length
+        ? order.path.indexOf(order.stationEnd) - 1
+        : order.path.indexOf(order.stationEnd);
+    const endTime = order.schedule.segments[endStationIndex].time[0];
     return formatDate(new Date(endTime), 'MMMM dd hh:mm', 'en-US');
   }
 

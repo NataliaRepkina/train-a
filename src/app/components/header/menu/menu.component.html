@@ -1,15 +1,39 @@
 <nav>
   <ul [ngClass]="{ row: !isMobile, colum: isMobile }">
-    <li><a [routerLink]="navLinks.guest.home" (click)="onLinkClick()">Home</a></li>
+    <li>
+      <a
+        [routerLink]="navLinks.guest.home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="onLinkClick()"
+        >Home</a
+      >
+    </li>
     <ng-container *ngIf="role !== 'guest'">
-      <li><a [routerLink]="navLinks.user.profile" (click)="onLinkClick()">Profile</a></li>
+      <li>
+        <a [routerLink]="navLinks.user.profile" routerLinkActive="active" (click)="onLinkClick()"
+          >Profile</a
+        >
+      </li>
     </ng-container>
     <ng-container *ngIf="role === 'user'">
-      <li><a [routerLink]="navLinks.user.orders" (click)="onLinkClick()">My Orders</a></li>
+      <li>
+        <a [routerLink]="navLinks.user.orders" routerLinkActive="active" (click)="onLinkClick()"
+          >My Orders</a
+        >
+      </li>
     </ng-container>
     <ng-container *ngIf="role === 'manager'">
-      <li><a [routerLink]="navLinks.user.orders" (click)="onLinkClick()">Orders</a></li>
-      <li><a [routerLink]="navLinks.admin.panel" (click)="onLinkClick()">Admin</a></li>
+      <li>
+        <a [routerLink]="navLinks.user.orders" routerLinkActive="active" (click)="onLinkClick()"
+          >Orders</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="navLinks.admin.panel" routerLinkActive="active" (click)="onLinkClick()"
+          >Admin</a
+        >
+      </li>
     </ng-container>
   </ul>
 </nav>

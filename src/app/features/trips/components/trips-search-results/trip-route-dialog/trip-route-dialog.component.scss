@@ -14,6 +14,12 @@
   justify-content: space-between;
 }
 
+.legend {
+  font-weight: 500;
+  color: var(--primary-blue);
+  margin-bottom: 0.75rem;
+}
+
 .icon {
   background: #fff;
   color: var(--primary-blue);
@@ -90,6 +96,7 @@
 .station-wrapper {
   display: flex;
   flex-direction: column;
+  text-transform: capitalize;
 }
 
 .station-wrapper {

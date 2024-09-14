@@ -30,5 +30,11 @@
     }
   </mat-tab-group>
 } @else {
-  <p>Trips not found</p>
+  <div class="not-found-message">
+    <img src="assets/images/error-route.svg" alt="not found ico" />
+    <p>
+      Sorry, trips not found!<br />
+      Try choosing another date or station.
+    </p>
+  </div>
 }
