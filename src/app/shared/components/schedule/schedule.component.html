@@ -5,18 +5,22 @@
   @for (route of routes; track route.id) {
     <h1>Route {{ route.id }}</h1>
     @if (stations$ | async; as stations) {
-      <button mat-flat-button (click)="createRideDialog(route, stations)">Create Ride</button>
+      <button mat-flat-button (click)="createRideDialog(route, stations)" class="create-button">
+        Create Ride
+      </button>
     }
     @for (ride of rides$ | async; track ride.rideId) {
       <mat-card appearance="outlined">
-        <mat-card-header
-          ><h5 class="font-weight:bold;">Ride {{ ride.rideId }}</h5>
-
+        <mat-card-header>
+          <mat-card-title
+            ><h2>Ride {{ ride.rideId }}</h2></mat-card-title
+          >
           <button mat-icon-button (click)="openDialog(ride.rideId)">
             <mat-icon
               aria-hidden="false"
               aria-label="delete ride icon"
               fontIcon="delete"
+              color="primary"
             ></mat-icon>
           </button>
         </mat-card-header>
@@ -37,7 +41,7 @@
                           idx === isEnable[1]
                         )
                       ) {
-                        Departure:
+                        <span class="strong">Departure:</span>
                         {{ ride.schedule.segments[idx].time[0] | date: 'yyyy-MM-dd HH:mm' }}
                         <mat-icon
                           aria-hidden="false"
@@ -92,10 +96,10 @@
                           idx === isEnable[1]
                         )
                       ) {
-                        Departure:
+                        <span class="strong">Departure:</span>
                         {{ ride.schedule.segments[idx - 1].time[1] | date: 'yyyy-MM-dd HH:mm' }}
                         <br />
-                        Arrival:
+                        <span class="strong">Arrival:</span>
                         {{ ride.schedule.segments[idx].time[0] | date: 'yyyy-MM-dd HH:mm' }}
                         <mat-icon
                           aria-hidden="false"
@@ -224,7 +228,7 @@
                           idx === isEnablePrice[1]
                         )
                       ) {
-                        Price
+                        <span class="strong">Prices:</span>
                         <mat-icon
                           aria-hidden="false"
                           aria-label="delete station icon"
