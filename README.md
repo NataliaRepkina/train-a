@@ -1,6 +1,7 @@
 # Train-A
 
-![image](https://github.com/user-attachments/assets/65dcc82b-9856-48ba-a47c-dd89ce4cb72a)
+![image](https://github.com/user-attachments/assets/48abed49-6703-4365-b050-9104233e49ad)
+
 
 This is a team learning project done as part of the [RS School Angular course](https://rs.school/courses/angular) in 2024.
 It is an SPA which aims to search and book train tickets and for the administrator to manage journeys, routes and trains.
