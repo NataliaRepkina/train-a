@@ -26,7 +26,7 @@ This project was generated with Angular version 18.2.1.
 # Our Team
 
 - **[Herman](https://github.com/mogitrash)**- teamlead, frontend
-- [Natalia](https://github.com/Nuttik) - frontend, UI designer
+- [Natalia](https://github.com/NataliaRepkina) - frontend, UI designer
 - [Artur](https://github.com/Arthurchkeee) - frontend
 - [Aleksandra](https://github.com/Aleksa013) - frontend
 
